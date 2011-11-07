@@ -18,7 +18,7 @@ void type_prompt()
 
 int read_command(char *command, char *params)
 {
-  printf("%s", command[0]);
+  /* printf("%s", command[0]);*/
 
   int string_max_laenge = 100;
   char input_string[string_max_laenge + 1];
@@ -92,61 +92,53 @@ void changedir(char *path)
 
 void get_version()
 {
-  /* if(version != NULL)*/
-  /* {*/
-    printf("Version: 0.0.1\n");
-  /* }*/
-  /* else*/
-  /* {*/
-  /*   printf("No Version provided\n");*/
-  /* }*/
+  printf("Version: 0.0.1\n");
 }
 
 void quit_shell(int *run)
 {
-  *run = 0;
+  *run = FALSE;
+}
+
+void print_help()
+{
+  printf("this is the help output\n");
 }
 
 int main(int argc, const char *argv[])
 {
-  int RUN = 1;
-
-  char *builtin_commands[] =
-  {
-    "quit",
-    "version",
-    "/",
-    "help"
-  };
-
-  char command[100];
-  char params[100];
-
-  /* char version[] = "0.0.1";*/
+  int RUN = TRUE;
+  char command[100] = "";
+  char params[100] = "";
 
   int PIDstatus = 0;
-  char testdir[] = "/Users/foobar/Dropbox/HAW/BS/";
 
   while (RUN) {/* Endlosschleife */
     type_prompt(); /* Prompt ausgeben */
-    get_version();
-    changedir(testdir);
-    type_prompt();
-    quit_shell(&RUN);
-
 
     read_command(command, params);  /* Eingabezeile von Tastatur lesen */
-    /* printf("%s", command);*/
-    /* PIDstatus = fork(); [> Kind erzeugen <]*/
-    /* if (PIDstatus < 0) {*/
-    /*   printf("Unable to fork"); [> Fehlerbedingung <]*/
-    /*   continue; [> Schleife wiederholen <]*/
-    /* }*/
-    /* if (PIDstatus > 0) {*/
-    /*   waitpid (PIDstatus, &status, 0);   [> Elternprozess wartet auf Kind <]*/
-    /* } else {*/
-    /*   execve(command, params, 0);   [> Das Kind-Programm ausführen <]*/
-    /* }*/
+
+    if(!strcmp(command, "quit")) {
+      quit_shell(&RUN);
+    } else if (!strcmp(command, "version")) {
+      get_version();
+    } else if (!strcmp(command, "/")) {
+      changedir(params);
+    } else if (!strcmp(command, "help")) {
+      print_help();
+    } else {
+      /* PIDstatus = fork(); [> Kind erzeugen <]*/
+      /* if (PIDstatus < 0) {*/
+      /*   printf("Unable to fork"); [> Fehlerbedingung <]*/
+      /*   continue; [> Schleife wiederholen <]*/
+      /* }*/
+      /* if (PIDstatus > 0) {*/
+      /*   waitpid (PIDstatus, &status, 0);   [> Elternprozess wartet auf Kind <]*/
+      /* } else {*/
+      /*   execve(command, params, 0);   [> Das Kind-Programm ausführen <]*/
+      /* }*/
+      printf("external command\n");
+    }
   }
   return 0;
 }
