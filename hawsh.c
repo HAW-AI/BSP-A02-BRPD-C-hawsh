@@ -114,6 +114,7 @@ int main(int argc, const char *argv[])
   int PIDstatus = 0;
 
   while (RUN) {/* Endlosschleife */
+    strcpy(command, "");
     type_prompt(); /* Prompt ausgeben */
 
     read_command(command, params);  /* Eingabezeile von Tastatur lesen */
@@ -137,7 +138,19 @@ int main(int argc, const char *argv[])
       /* } else {*/
       /*   execve(command, params, 0);   [> Das Kind-Programm ausführen <]*/
       /* }*/
-      printf("external command\n");
+      PIDstatus = fork();
+      if (PIDstatus < 0) {
+        printf("Sorry, unable to fork");
+      }
+      else if (PIDstatus > 0) {
+        if (params[strlen(params)-1] != '&') {
+          waitpid(PIDstatus,NULL,0);
+        }
+      }
+      else {
+	RUN = FALSE; // stop loop for this process
+        execve(command, (char *const*)params, 0);
+      }
     }
   }
   return 0;
