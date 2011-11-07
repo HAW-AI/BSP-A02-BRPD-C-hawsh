@@ -73,7 +73,7 @@ int read_command(char *command, char *params)
 
 void changedir(char *path)
 {
-  if(path != NULL)
+  if(path != NULL && strcmp(&path[1], "/"))
   {
     if(chdir(path) == 0)
     {
