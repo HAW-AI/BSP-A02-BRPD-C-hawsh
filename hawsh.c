@@ -2,6 +2,7 @@
 #include <sys/wait.h> // waitpid
 #include <unistd.h> // execve
 #include <string.h>
+#include <stdlib.h>
 
 #ifndef FALSE
 #define FALSE (0)
@@ -149,7 +150,12 @@ int main(int argc, const char *argv[])
       }
       else {
 	RUN = FALSE; // stop loop for this process
-        execve(command, (char *const*)params, 0);
+        if (params[strlen(params)-1] != '&') {
+	  printf("\n"); // beautify output
+	}
+        if (execlp(command, (char const*)params, 0) == -1) {
+	  printf("Programm nicht gefunden!\n");
+	}
       }
     }
   }
