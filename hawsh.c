@@ -53,7 +53,7 @@ int read_command(char *command, char *params)
       }
       if (middle_reached)
       {
-        params_from_input[new_string_index] = input_string[i];
+        params_from_input[new_string_index] = input_string[i+1];
         new_string_index++;
       } else {
         command_from_input[new_string_index] = input_string[i];
